@@ -1,0 +1,24 @@
+<com.desarrollodroide.twopanels.TwoPaneLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.desarrollodroide.twopanels.MyExtendsFrameLayout
+        android:id="@+id/left"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
+    <com.desarrollodroide.twopanels.MyExtendedImageView
+        android:id="@+id/handle"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentTop="true" />
+
+    <com.desarrollodroide.twopanels.MyExtendsFrameLayout
+        android:id="@+id/right"
+        android:layout_width="0dp"
+        android:layout_height="0dp" />
+
+</com.desarrollodroide.twopanels.TwoPaneLayout>

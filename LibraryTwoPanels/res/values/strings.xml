@@ -1,0 +1,11 @@
+<resources>
+
+	<string name="app_name">ThreePaneDemo</string>
+	<string name="hello_world">Hello world!</string>
+	<string name="menu_settings">Settings</string>
+	<string name="title_activity_main">MainActivity</string>
+	<string name="lorem_ipsum">Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer at sem fermentum, ullamcorper urna a, luctus felis. Fusce id mauris in tellus aliquet blandit a a enim. Etiam nec enim at dui fermentum ultricies. Phasellus a imperdiet libero, in molestie quam. Maecenas purus metus, venenatis quis pellentesque vitae, ullamcorper mollis enim. Aliquam erat volutpat. Cras in mi eget arcu tristique viverra non sed massa. Phasellus ut libero quis leo gravida molestie. Sed vitae cursus lorem, eu varius nulla.
+
+Duis fermentum orci lectus, quis porttitor mi porta in. Sed egestas ornare lacus, a egestas dui semper nec. Proin in massa nec neque feugiat gravida ut at tellus. Praesent ut neque eget augue tempus sollicitudin. Aliquam erat volutpat. Praesent ut adipiscing turpis, eget tempor elit. Proin a eros vel urna tincidunt viverra quis nec odio. Cras a aliquam nisi. Nulla faucibus odio nunc, nec elementum quam tempus sit amet. Morbi venenatis dolor metus, sed fringilla libero euismod vitae. Sed interdum mauris eu libero aliquam placerat. Ut at viverra dolor.</string>
+
+</resources>

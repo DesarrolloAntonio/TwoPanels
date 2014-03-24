@@ -1,0 +1,35 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_rotate"
+        android:icon="@drawable/ic_action_overflow"
+        android:showAsAction="always">
+        <menu>
+            <item
+                android:id="@+id/horizontal"
+                android:title="@string/horizontal"/>
+            <item
+                android:id="@+id/vertical"
+                android:title="@string/vertical"/>
+            <item
+                android:id="@+id/hide_left_animate"
+                android:title="@string/slide_left_animate"/>
+            <item
+                android:id="@+id/hide_right_animate"
+                android:title="@string/slide_right_animate"/>
+            <item
+                android:id="@+id/hide_left"
+                android:title="@string/hide_left"/>
+            <item
+                android:id="@+id/hide_right"
+                android:title="@string/hide_right"/>
+            <item
+                android:id="@+id/show_two_fragments"
+                android:title="@string/show_two_fragments"/>
+            <item
+                android:id="@+id/switch_slider"
+                android:title="@string/switch_slider"/>
+        </menu>
+    </item>
+
+</menu>
