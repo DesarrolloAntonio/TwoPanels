@@ -50,7 +50,10 @@ public abstract class TwoPanelsBaseActivity extends Activity implements LeftFrag
 			mRootPanel.changeSliderVisitility();
 		}
 	}
-
+	
+	protected void setSliderVisitility (Boolean visibility){
+		mRootPanel.setSliderVisitility(visibility);
+	}
 
 	protected void setBaseOrientation(int orientation) {
 		if (orientation == LinearLayout.HORIZONTAL) {
@@ -136,7 +139,6 @@ public abstract class TwoPanelsBaseActivity extends Activity implements LeftFrag
 	public void onWindowFocusChanged(boolean hasFocus) {
 		mRightFragment = getFragmentManager().findFragmentById(R.id.right);
 		mLeftFragment = getFragmentManager().findFragmentById(R.id.left);
-		mRootPanel.updateSliderVisivility();
 	}
 
 	private void changeOrientation(int orientation) {
@@ -191,7 +193,6 @@ public abstract class TwoPanelsBaseActivity extends Activity implements LeftFrag
 		} catch (Exception e) {
 			Log.v("Error in updateButtonSliderOrientation", e.toString());
 		}
-
 	}
 
 	public Fragment getmRightFragment() {
@@ -213,7 +214,6 @@ public abstract class TwoPanelsBaseActivity extends Activity implements LeftFrag
 	public int getFragmentsOrientation() {
 		return mFragmentsOrientation;
 	}
-
 
 	protected void setSliderSize(int size) {
 		mRootPanel.setmSliderBarConst(size);

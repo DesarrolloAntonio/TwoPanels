@@ -43,7 +43,6 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 	private int mActionbarHeight;
 	private int mStatusBarHeight;
 	private ImageView mSliderBar;
-	private int mSizeSliderinVIew = 0;
 	private int horizontalDrawable, verticalDrawable;
 
 	// Default slider size
@@ -87,9 +86,6 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 		mSliderBarConst = size;
 		setParamsValues();
 		mSliderBar.setOnTouchListener(this);
-		if (mIsSliderVisible) {
-			mSizeSliderinVIew = mSliderBarConst;
-		}
 	}
 
 	public void setBaseOrientation(int orientation) {
@@ -105,12 +101,8 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 	}
 
 	private void changeOrientation(int orientation) {
-		// mFragmentsOrientation = orientation;
 		setOrientation(orientation);
 		setParamsValues();
-		// updateButtonSliderOrientation();
-		// updateWidgetsOnOrientationChange(mIsLeftShowing, mIsRightShowing,
-		// false);
 	}
 
 	public void setParamsValues() {
@@ -121,24 +113,35 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 		LinearLayout.LayoutParams rightParams = (LinearLayout.LayoutParams) mRight.getLayoutParams();
 		LinearLayout.LayoutParams slidersParams = (LinearLayout.LayoutParams) mSliderBar.getLayoutParams();
 
+		Log.v("mLeftHeight: " +mLeftHeight,  "mRightHeight: " + mRightHeight);
+		Log.v("mLeftWidth: " + mLeftWidth, "mRightWidth: " +mRightWidth ); 
 		if (getOrientation() == LinearLayout.VERTICAL) {
 			rightParams.width = LayoutParams.MATCH_PARENT;
 			leftParams.width = LayoutParams.MATCH_PARENT;
 			rightParams.height = mRightHeight;
 			leftParams.height = mLeftHeight;
-			slidersParams.width = LayoutParams.MATCH_PARENT;
-			slidersParams.height = mSliderBarConst;
 			mSliderBar.setBackgroundResource(horizontalDrawable);
+			slidersParams.width = LayoutParams.MATCH_PARENT;
+			if (mIsSliderVisible) {
+				slidersParams.height = mSliderBarConst;
+			} else {
+				slidersParams.height = 0;
+			}
+			
 		} else {
 			rightParams.width = mRightWidth;
 			leftParams.width = mLeftWidth;
 			rightParams.height = LayoutParams.MATCH_PARENT;
 			leftParams.height = LayoutParams.MATCH_PARENT;
-			slidersParams.width = mSliderBarConst;
-			slidersParams.height = LayoutParams.MATCH_PARENT;
 			mSliderBar.setBackgroundResource(verticalDrawable);
+			slidersParams.height = LayoutParams.MATCH_PARENT;
+			if (mIsSliderVisible) {
+				slidersParams.width = mSliderBarConst;
+			} else {
+				slidersParams.width = 0;
+			}
+			
 		}
-
 	}
 
 	public void setSlidersDrawables(int verticalDrawable, int horizontalDrawable) {
@@ -152,31 +155,18 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 		}
 	}
 
-	public void setLeftRightWidth() {
-		mLeftWidth = mLeft.getWidth();
-		mRightWidth = mRight.getWidth();
-	}
-
-	public void setLeftRightHeight() {
-		mLeftHeight = mLeft.getHeight();
-		mRightHeight = mRight.getHeight();
-	}
-
 	public void updateWidgetsOnOrientationChange(Boolean isLeftShowing, Boolean isRightShowing, Boolean isScreenRotation) {
 		int virtualSliderSize = 0;
 		if (mIsSliderVisible) {
 			virtualSliderSize = mSliderBarConst;
 		}
-
 		float preWidth;
 		float preHeight;
 
 		if (!isRightShowing) {
-			Log.v("1", "1");
 			preWidth = (float) mScreenWidth / (mScreenWidth - (mRightWidth + virtualSliderSize));
 			preHeight = (float) mScreenHeight / (mScreenHeight - (mRightHeight + virtualSliderSize));
 		} else {
-			Log.v("3", "3");
 			preWidth = (float) mScreenWidth / mLeftWidth;
 			preHeight = (float) mScreenHeight / mLeftHeight;
 		}
@@ -189,14 +179,12 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 
 		if (isScreenRotation) {
 			if (getOrientation() == LinearLayout.VERTICAL) {
-				// Log.v("isScreenRotation", "Vertical");
 				newHeight = (mScreenHeight / preHeight);
 				mLeftWidth = mScreenWidth;
 				mRightWidth = mScreenWidth;
 				mLeftHeight = (int) newHeight;
 				mRightHeight = (int) mScreenHeight - (mLeftHeight + virtualSliderSize);
 			} else {
-				// Log.v("isScreenRotation", "Vertical");
 				newWidth = (mScreenWidth / preWidth);
 				mLeftHeight = mScreenHeight;
 				mRightHeight = mScreenHeight;
@@ -205,12 +193,10 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 			}
 		} else {
 			if (getOrientation() == LinearLayout.VERTICAL) {
-				// Log.v("!isScreenRotation", "vertical");
 				newHeight = (mScreenHeight / preWidth);
 				mLeftHeight = (int) newHeight;
 				mRightHeight = (int) mScreenHeight - (mLeftHeight + virtualSliderSize);
 			} else {
-				// Log.v("!isScreenRotation", "Horizontal");
 				newWidth = (mScreenWidth / preHeight);
 				mLeftWidth = (int) newWidth;
 				mRightWidth = mScreenWidth - (mLeftWidth + virtualSliderSize);
@@ -220,7 +206,6 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 		// Set the position of the views
 		if (getOrientation() == LinearLayout.HORIZONTAL) {
 			if (!isLeftShowing) {
-				Log.v("!isLeftShowing", "HORIZONTAL");
 				resetWidthWidget(mRight, mScreenWidth);
 				resetWidthWidget(mLeft, mLeftWidth);
 				if (isScreenRotation) {
@@ -244,7 +229,6 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 				resetWidthWidget(mRight, mRightWidth);
 				resetWidthWidget(mLeft, mLeftWidth);
 				mLeft.setX(0);
-
 				if (isScreenRotation) {
 					mRight.setX(mLeft.getWidth() + virtualSliderSize);
 				} else {
@@ -253,7 +237,6 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 			}
 		} else {
 			if (!isLeftShowing) {
-				Log.v("!isLeftShowing", "vertical");
 				resetHeightWidget(mRight, mScreenHeight);
 				resetHeightWidget(mLeft, mLeftHeight);
 				if (isScreenRotation) {
@@ -269,7 +252,6 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 					mRight.setY(-mLeftHeight - virtualSliderSize);
 				}
 			} else if (!isRightShowing) {
-				Log.v("!isRightShowing", "horizontal");
 				resetHeightWidget(mRight, mRightHeight);
 				resetHeightWidget(mLeft, mScreenHeight);
 				if (isScreenRotation) {
@@ -281,11 +263,9 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 					mRight.setY(0);
 				}
 			} else {
-				Log.v("Panel doble", " ");
 				resetHeightWidget(mRight, mRightHeight);
 				resetHeightWidget(mLeft, mLeftHeight);
 				mLeft.setY(0);
-
 				if (isScreenRotation) {
 					mRight.setY(mLeft.getHeight() + virtualSliderSize);
 				} else {
@@ -301,9 +281,13 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 			virtualSliderSize = mSliderBarConst;
 		}
 		if (getOrientation() == LinearLayout.HORIZONTAL) {
+			resetWidthWidget(mLeft, mLeftWidth);
+			resetWidthWidget(mRight, mRightWidth);
 			translateWidgetsByX(mLeftWidth + virtualSliderSize, mLeft, mRight, mSliderBar);
 			startAnimation(mRight, "MyWidth", mRight.getWidth(), mScreenWidth - mLeftWidth - virtualSliderSize);
 		} else {
+			resetHeightWidget(mLeft, mLeftHeight);
+			resetHeightWidget(mRight, mRightHeight);
 			translateWidgetsByY(mLeftHeight + virtualSliderSize, mLeft, mRight, mSliderBar);
 			startAnimation(mRight, "MyHeight", mRight.getHeight(), mScreenHeight - mLeftHeight - virtualSliderSize);
 		}
@@ -315,9 +299,13 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 			virtualSliderSize = mSliderBarConst;
 		}
 		if (getOrientation() == LinearLayout.HORIZONTAL) {
+			resetWidthWidget(mLeft, mLeftWidth);
+			resetWidthWidget(mRight, mRightWidth);
 			startAnimation(mLeft, "MyWidth", mLeft.getWidth(), mScreenWidth - (mRightWidth + virtualSliderSize));
 		} else {
-			startAnimation(mLeft, "MyHeight", mLeft.getHeight(), mLeftHeight);
+			resetHeightWidget(mLeft, mLeftHeight);
+			resetHeightWidget(mRight, mRightHeight);
+			startAnimation(mLeft, "MyHeight", mLeft.getHeight(), mScreenHeight - (mRightHeight + virtualSliderSize));
 		}
 	}
 
@@ -327,8 +315,6 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 			virtualSliderSize = mSliderBarConst;
 		}
 		if (getOrientation() == LinearLayout.HORIZONTAL) {
-			resetWidthWidget(mLeft, mLeftWidth);
-			resetWidthWidget(mRight, mRightWidth);
 			requestLayout();
 			// Translate view left off screeen and move right to the left
 			translateWidgetsByX(-1 * (mLeftWidth + virtualSliderSize), mLeft, mRight, mSliderBar);
@@ -336,8 +322,6 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 			mRight.setClickable(false);
 			startAnimation(mRight, "MyWidth", mRight.getWidth(), mScreenWidth);
 		} else {
-			resetHeightWidget(mLeft, mLeftHeight);
-			resetHeightWidget(mRight, mRightHeight);
 			requestLayout();
 			// Translate bottom view to top
 			translateWidgetsByY(-1 * (mLeftHeight + virtualSliderSize), mRight, mLeft, mSliderBar);
@@ -347,20 +331,34 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 
 	}
 
+	public void hideRight() {
+		int virtualSliderSize = 0;
+		if (mIsSliderVisible) {
+			virtualSliderSize = mSliderBarConst;
+		}
+		if (getOrientation() == LinearLayout.HORIZONTAL) {
+			requestLayout();
+			// Expand left view
+			startAnimation(mLeft, "MyWidth", mLeft.getWidth() + virtualSliderSize, mScreenWidth);
+		} else {
+			requestLayout();
+			// Expand left view
+			startAnimation(mLeft, "MyHeight", mLeft.getHeight() + virtualSliderSize, mScreenHeight);
+		}
+	}
+
 	public void hideLeftNoAnimate() {
 		int virtualSliderSize = 0;
 		if (mIsSliderVisible) {
 			virtualSliderSize = mSliderBarConst;
 		}
 		if (getOrientation() == LinearLayout.HORIZONTAL) {
-			resetWidthWidget(mLeft, mLeftWidth);
 			resetWidthWidget(mRight, mScreenWidth);
 			requestLayout();
 			mLeft.setX(-1 * (mLeftWidth + virtualSliderSize));
 			mSliderBar.setX(mLeft.getWidth() - mLeftWidth - virtualSliderSize);
 			mRight.setX(mLeft.getWidth() - mLeftWidth);
 		} else {
-			resetHeightWidget(mLeft, mLeftHeight);
 			resetHeightWidget(mRight, mScreenHeight);
 			requestLayout();
 			mLeft.setY(-1 * (mLeftHeight + virtualSliderSize));
@@ -375,7 +373,6 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 			virtualSliderSize = mSliderBarConst;
 		}
 		if (getOrientation() == LinearLayout.HORIZONTAL) {
-			Log.v("hideRightNoAnimate", "horizontal");
 			resetWidthWidget(mLeft, mScreenWidth);
 			resetWidthWidget(mRight, mRightWidth);
 			requestLayout();
@@ -383,7 +380,6 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 			mSliderBar.setX(mLeft.getWidth());
 			mRight.setX(mLeft.getWidth() + virtualSliderSize);
 		} else {
-			Log.v("hideRightNoAnimate", "vertical");
 			resetHeightWidget(mLeft, mScreenHeight);
 			resetHeightWidget(mRight, mRightHeight);
 			requestLayout();
@@ -392,7 +388,7 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 			mRight.setY(mLeft.getHeight() + virtualSliderSize);
 		}
 	}
-	
+
 	public void showTwoPanels() {
 		int virtualSliderSize = 0;
 		if (mIsSliderVisible) {
@@ -404,37 +400,16 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 			requestLayout();
 			mLeft.setX(0);
 			mSliderBar.setX(mLeft.getWidth());
-			mRight.setX(mLeft.getWidth()+virtualSliderSize);
+			mRight.setX(mLeft.getWidth() + virtualSliderSize);
 		} else {
 			resetHeightWidget(mLeft, mLeftHeight);
 			resetHeightWidget(mRight, mRightHeight);
 			requestLayout();
 			mLeft.setY(0);
 			mSliderBar.setY(mLeft.getHeight());
-			mRight.setY(mLeft.getHeight()+virtualSliderSize);
+			mRight.setY(mLeft.getHeight() + virtualSliderSize);
 		}
 
-	}
-
-	public void hideRight() {
-
-		int virtualSliderSize = 0;
-		if (mIsSliderVisible) {
-			virtualSliderSize = mSliderBarConst;
-		}
-		if (getOrientation() == LinearLayout.HORIZONTAL) {
-			resetWidthWidget(mLeft, mLeftWidth);
-			resetWidthWidget(mRight, mRightWidth);
-			requestLayout();
-			// Expand left view
-			startAnimation(mLeft, "MyWidth", mLeft.getWidth() + virtualSliderSize, mScreenWidth);
-		} else {
-			resetHeightWidget(mLeft, mLeftHeight);
-			resetHeightWidget(mRight, mRightHeight);
-			requestLayout();
-			// Expand left view
-			startAnimation(mLeft, "MyHeight", mLeft.getHeight() + virtualSliderSize, mScreenHeight);
-		}
 	}
 
 	public void setWidthsFromWeight(float leftHeight, float rightHeight) {
@@ -469,7 +444,6 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 		ViewGroup.LayoutParams RightParams = mRight.getLayoutParams();
 		RightParams.height = mRightHeight;
 		mRight.setLayoutParams(RightParams);
-		Log.v("setHeightsFromWeight mLeftHeight: " + mLeftHeight, "mRightHeight: " + mRightHeight);
 	}
 
 	private void translateWidgetsByX(int deltaX, View... views) {
@@ -516,40 +490,36 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 	}
 
 	public void changeSliderVisitility() {
-
-		// mSliderBar.setVisibility(View.VISIBLE);
 		if (mIsSliderVisible) {
 			if (getOrientation() == LinearLayout.HORIZONTAL) {
 				startAnimation(mSliderBar, "MyWidth", mSliderBarConst, 0);
-				startAnimation(mRight, "MyWidth", mRight.getWidth(), mRight.getWidth() + (mSliderBarConst / 2));
-				startAnimation(mLeft, "MyWidth", mLeft.getWidth(), mLeft.getWidth() + (mSliderBarConst / 2));
+				mRightWidth = mRight.getWidth() + (mSliderBarConst / 2);
+				mLeftWidth = mLeft.getWidth() + (mSliderBarConst / 2);
+				startAnimation(mRight, "MyWidth", mRight.getWidth(), mRightWidth);
+				startAnimation(mLeft, "MyWidth", mLeft.getWidth(), mLeftWidth);
 			} else {
 				startAnimation(mSliderBar, "MyHeight", mSliderBarConst, 0);
-				startAnimation(mRight, "MyHeight", mRight.getHeight(), mRight.getHeight() + (mSliderBarConst / 2));
-				startAnimation(mLeft, "MyHeight", mLeft.getHeight(), mLeft.getHeight() + (mSliderBarConst / 2));
+				mRightHeight = mRight.getHeight() + (mSliderBarConst / 2);
+				mLeftHeight = mLeft.getHeight() + (mSliderBarConst / 2);
+				startAnimation(mRight, "MyHeight", mRight.getHeight(), mRightHeight);
+				startAnimation(mLeft, "MyHeight", mLeft.getHeight(), mLeftHeight);
 			}
 			mIsSliderVisible = false;
 		} else {
 			if (getOrientation() == LinearLayout.HORIZONTAL) {
 				startAnimation(mSliderBar, "MyWidth", 0, mSliderBarConst);
-				startAnimation(mRight, "MyWidth", mRight.getWidth(), mRight.getWidth() - (mSliderBarConst / 2));
-				startAnimation(mLeft, "MyWidth", mLeft.getWidth(), mLeft.getWidth() - (mSliderBarConst / 2));
+				mRightWidth = mRight.getWidth() - (mSliderBarConst / 2);
+				mLeftWidth = mLeft.getWidth() - (mSliderBarConst / 2);
+				startAnimation(mRight, "MyWidth", mRight.getWidth(), mRightWidth);
+				startAnimation(mLeft, "MyWidth", mLeft.getWidth(), mLeftWidth);
 			} else {
 				startAnimation(mSliderBar, "MyHeight", 0, mSliderBarConst);
-				startAnimation(mRight, "MyHeight", mRight.getHeight(), mRight.getHeight() - (mSliderBarConst / 2));
-				startAnimation(mLeft, "MyHeight", mLeft.getHeight(), mLeft.getHeight() - (mSliderBarConst / 2));
+				mRightHeight = mRight.getHeight() - (mSliderBarConst / 2);
+				mLeftHeight = mLeft.getHeight() - (mSliderBarConst / 2);
+				startAnimation(mRight, "MyHeight", mRight.getHeight(), mRightHeight);
+				startAnimation(mLeft, "MyHeight", mLeft.getHeight(), mLeftHeight);
 			}
 			mIsSliderVisible = true;
-		}
-	}
-
-	public void updateSliderVisivility() {
-		if (mIsSliderVisible) {
-			// mSliderBar.setVisibility(View.VISIBLE);
-			mSizeSliderinVIew = mSliderBarConst;
-		} else {
-			// mSliderBar.setVisibility(View.GONE);
-			mSizeSliderinVIew = 0;
 		}
 	}
 
@@ -571,6 +541,11 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 
 	public ImageView getSliderBar() {
 		return mSliderBar;
+	}
+	
+	public void setSliderVisitility(Boolean mIsSliderVisible) {
+		this.mIsSliderVisible = mIsSliderVisible;
+		setParamsValues();
 	}
 
 	public void setmSliderBarConst(int mSliderBarConst) {
@@ -664,7 +639,7 @@ public class TwoPaneLayout extends LinearLayout implements OnTouchListener {
 				((LeftFragment) ((TwoPanelsBaseActivity) mContext).getmLeftFragment()).getmSlideLeftButton().setClickable(false);
 				((RightFragment) ((TwoPanelsBaseActivity) mContext).getmRightFragment()).getmSlideRightButton().setClickable(false);
 			} catch (Exception e) {
-				
+
 			}
 		}
 
